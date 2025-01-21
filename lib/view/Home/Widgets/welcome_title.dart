@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tactix_academy_players/controller/screen_home_controller.dart';
+import 'package:tactix_academy_players/controller/Controllers/screen_home_controller.dart';
 import 'package:tactix_academy_players/view/BroadCast/brod_cast.dart';
 
 class WelcomeTitle extends StatelessWidget {

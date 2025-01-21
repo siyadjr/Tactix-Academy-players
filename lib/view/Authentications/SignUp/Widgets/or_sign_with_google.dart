@@ -20,7 +20,7 @@ class OrSignWIthGoogle extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 8.0),
           child: Text(
-            'Or sign Up with',
+            'Or sign with',
             style: TextStyle(color: secondaryTextColor),
           ),
         ),

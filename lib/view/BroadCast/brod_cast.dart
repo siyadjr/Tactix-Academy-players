@@ -97,7 +97,7 @@ class BroadCastAnnouncement extends StatelessWidget {
 
                             // Get date header
                             final String dateHeader =
-                                _getDateHeader(messageDate);
+                                getDateHeader(messageDate);
 
                             // Check if we need to show a new date header
                             final bool showDateHeader =
@@ -140,7 +140,7 @@ class BroadCastAnnouncement extends StatelessWidget {
                                   child: BroadcastMessageCard(
                                     sender: 'Manager',
                                     formattedTime:
-                                        _formatMessageTime(messageDate),
+                                        formatMessageTime(messageDate),
                                     message: message,
                                   ),
                                 ),
@@ -160,7 +160,7 @@ class BroadCastAnnouncement extends StatelessWidget {
     );
   }
 
-  String _getDateHeader(DateTime messageDate) {
+  String getDateHeader(DateTime messageDate) {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final yesterday = today.subtract(const Duration(days: 1));
@@ -179,7 +179,7 @@ class BroadCastAnnouncement extends StatelessWidget {
     }
   }
 
-  String _formatMessageTime(DateTime timestamp) {
+  String formatMessageTime(DateTime timestamp) {
     return DateFormat('h:mm a').format(timestamp); // "2:30 PM"
   }
 }

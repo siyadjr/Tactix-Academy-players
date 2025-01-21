@@ -108,7 +108,6 @@ class ScreenHomeController extends ChangeNotifier {
             _playersPhotos.clear();
             _playersPhotos
                 .addAll(players.map((player) => player['userProfile']));
-            log('Players data: $_playersPhotos');
           } else {
             // print('No players found for this team.');
           }

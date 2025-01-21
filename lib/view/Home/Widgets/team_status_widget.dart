@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tactix_academy_players/core/Theme/appcolours.dart';
 import 'package:tactix_academy_players/core/Theme/text_style.dart';
+import 'package:tactix_academy_players/view/Attendance/attendance.dart';
 
 class TeamStatusWidget extends StatefulWidget {
   const TeamStatusWidget({super.key});
@@ -187,13 +188,15 @@ class _TeamStatusWidgetState extends State<TeamStatusWidget> {
             // Stats boxes
             Column(
               children: [
-                _buildStatBox(
+                buildStatBox(
+                  nextPage: Attendance(),
                   title: 'Attendance',
                   image: 'assets/Attendence.jpg',
                   gradientColors: [mainBackground, Colors.black],
                 ),
                 const SizedBox(height: 10),
-                _buildStatBox(
+                buildStatBox(
+                  nextPage: Attendance(),
                   title: 'Arsenal Fc',
                   image: 'assets/RankList.png',
                   gradientColors: [mainBackground, Colors.black],
@@ -206,76 +209,81 @@ class _TeamStatusWidgetState extends State<TeamStatusWidget> {
     );
   }
 
-  Widget _buildStatBox({
+  Widget buildStatBox({
+    required Widget nextPage,
     required String title,
     required String image,
     required List<Color> gradientColors,
   }) {
-    return Container(
-      height: 125,
-      width: 160,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Stack(
-          children: [
-            // Background image
-            Image.asset(
-              image,
-              fit: BoxFit.contain,
-              width: double.infinity,
-              height: double.infinity,
+    return GestureDetector(
+      onTap: () => Navigator.push(
+          context, MaterialPageRoute(builder: (ctx) => nextPage)),
+      child: Container(
+        height: 125,
+        width: 160,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
             ),
-            // Gradient overlay
-            Opacity(
-              opacity: 0.7,
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: gradientColors,
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Stack(
+            children: [
+              // Background image
+              Image.asset(
+                image,
+                fit: BoxFit.contain,
+                width: double.infinity,
+                height: double.infinity,
+              ),
+              // Gradient overlay
+              Opacity(
+                opacity: 0.7,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: gradientColors,
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
                   ),
                 ),
               ),
-            ),
-            // Content
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    title,
-                    style: subHeadingStyle.copyWith(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+              // Content
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      title,
+                      style: subHeadingStyle.copyWith(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Container(
-                    height: 2,
-                    width: 30,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.7),
-                      borderRadius: BorderRadius.circular(1),
+                    const SizedBox(height: 4),
+                    Container(
+                      height: 2,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.7),
+                        borderRadius: BorderRadius.circular(1),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -52,6 +52,7 @@ dependencies:
   lottie: ^3.1.3
   font_awesome_flutter: ^10.8.0
   intl: ^0.20.1
+  flutter_animate: ^4.5.2
 
 dev_dependencies:
   flutter_test:
@@ -84,6 +85,8 @@ flutter:
     - assets/RankList.png
     - assets/Assistsers.png
     - assets/Attendence.jpg
+    - assets/Loading animation.gif
+    - assets/Lottie loader animation.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -14,10 +14,24 @@ class UserDatabase {
   Future<void> signUpWithEmailPassword(BuildContext context, String name,
       String email, String password, String teamId) async {
     try {
+      // Check if email exists in Managers collection
+      final managerDoc = await FirebaseFirestore.instance
+          .collection('Managers')
+          .where('email', isEqualTo: email)
+          .get();
+
+      if (managerDoc.docs.isNotEmpty) {
+        log("User exists in Managers. Redirecting to home screen.");
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (ctx) => const ScreenHome()),
+        );
+        return;
+      }
+
       // Create user with email and password
       final UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-
       final user = userCredential.user;
 
       if (user != null) {
@@ -30,7 +44,9 @@ class UserDatabase {
           'teamId': teamId.isNotEmpty ? teamId : 'Not Assigned',
           'userProfile':
               'https://res.cloudinary.com/dplpu9uc5/image/upload/v1734508378/Default_avatar_uznlbr.jpg',
-          'number': 'not assigned',
+          'number': '0',
+          'achivements': [],
+          'matches': '0',
           'fit': 'Fit',
           'goals': '0',
           'assists': '0',
@@ -83,7 +99,6 @@ class UserDatabase {
 
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
-
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
@@ -94,6 +109,21 @@ class UserDatabase {
       final user = userCredential.user;
 
       if (user != null) {
+        // Check if the user exists in Managers collection
+        final managerDoc = await FirebaseFirestore.instance
+            .collection('Managers')
+            .where('email', isEqualTo: user.email)
+            .get();
+
+        if (managerDoc.docs.isNotEmpty) {
+          log("User exists in Managers. Redirecting to home screen.");
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (ctx) => const ScreenHome()),
+          );
+          return;
+        }
+
         final photo = await CloudineryClass().uploadProfile(user.photoURL!);
         await FirebaseFirestore.instance
             .collection('Players')
@@ -103,14 +133,17 @@ class UserDatabase {
           'email': user.email,
           'password': user.photoURL,
           'userProfile': photo,
+          'matches': '0',
           'teamId': 'Not Assigned',
-          'number': 'not assigned',
+          'number': '0',
           'fit': 'Fit',
+          'achivements': [],
           'goals': '0',
           'assists': '0',
           'rank': '0',
           'position': 'Unknown'
         });
+
         SharedPreferenceDatas().sharedPrefSignup();
 
         Navigator.pushReplacement(
@@ -127,7 +160,7 @@ class UserDatabase {
     }
   }
 
-  signWithGoogle(BuildContext context) async {
+  Future<void> signWithGoogle(BuildContext context) async {
     try {
       GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       if (googleUser == null) {
@@ -137,7 +170,6 @@ class UserDatabase {
       log("Google User Info: ${googleUser.displayName}, ${googleUser.email}");
 
       GoogleSignInAuthentication? googleAuth = await googleUser.authentication;
-
       AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
@@ -145,13 +177,29 @@ class UserDatabase {
 
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
-      if (userCredential.user != null) {
-        log("Firebase User: ${userCredential.user?.displayName}, ${userCredential.user?.email}");
-        // Navigate to HomeScreen
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const ScreenHome()),
-        );
+      final user = userCredential.user;
+
+      if (user != null) {
+        // Check if the user exists in Managers collection
+        final managerDoc = await FirebaseFirestore.instance
+            .collection('Managers')
+            .where('email', isEqualTo: user.email)
+            .get();
+
+        if (managerDoc.docs.isNotEmpty) {
+          log("User exists in Managers. Redirecting to home screen.");
+          SharedPreferenceDatas().sharedPrefSignIn();
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const ScreenHome()),
+          );
+        } else {
+          log("User not found in Managers. Showing SnackBar.");
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("No manager account found with this email."),
+            backgroundColor: mainBackground,
+          ));
+        }
       } else {
         log("No Firebase user found.");
       }
@@ -210,7 +258,7 @@ class UserDatabase {
       // Check if the name matches (optional, if required)
       if (userData['name'] == name) {
         log("Sign-in successful. Navigating to HomeScreen.");
-        // SharedPrefFunctions().sharedPrefSignup();
+        SharedPreferenceDatas().sharedPrefSignIn();
         // // Navigate to HomeScreen
         Navigator.pushReplacement(
           context,

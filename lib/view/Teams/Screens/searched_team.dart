@@ -13,7 +13,7 @@ class SearchedTeam extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (searchId.isEmpty) {
-      return const CustomScaffold(
+      return  CustomScaffold(
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

@@ -38,4 +38,3 @@ class BroadcastEmpty extends StatelessWidget {
     );
   }
 }
-

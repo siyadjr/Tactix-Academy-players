@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:provider/provider.dart';
-import 'package:tactix_academy_players/controller/team_controller.dart';
+import 'package:tactix_academy_players/controller/Controllers/team_controller.dart';
 import 'package:tactix_academy_players/core/Reusable%20Widgets/custom_scaffold.dart';
 
 class AllTeams extends StatelessWidget {

@@ -3,12 +3,13 @@ import 'package:tactix_academy_players/core/Theme/appcolours.dart';
 
 class CustomScaffold extends StatelessWidget {
   final Widget body;
-
-  const CustomScaffold({super.key, required this.body});
+  final PreferredSizeWidget? appBar;
+  CustomScaffold({super.key, required this.body, this.appBar});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appBar,
       backgroundColor: mainBackground,
       body: Stack(
         children: [
