@@ -4,17 +4,19 @@ import 'package:tactix_academy_players/controller/Controllers/screen_home_contro
 import 'package:tactix_academy_players/core/Theme/appcolours.dart';
 
 class PlayersSimpleDataList extends StatelessWidget {
-  const PlayersSimpleDataList({super.key, required this.items});
-
-  final List<String> items;
+  const PlayersSimpleDataList({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
+    // Get the screen width for responsiveness
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return SizedBox(
-      height: 100,
+      height: screenWidth * 0.3, // Adjust height based on screen width
       child: Consumer<ScreenHomeController>(
         builder: (context, teamProvider, child) {
-          // Ensure player photos are fetched if not already loaded
           if (teamProvider.playersPhotos.isEmpty) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               Provider.of<ScreenHomeController>(context, listen: false)
@@ -22,7 +24,6 @@ class PlayersSimpleDataList extends StatelessWidget {
             });
           }
 
-          // Display the list of player photos
           return teamProvider.playersPhotos.isEmpty
               ? const Text(
                   'No Players',
@@ -34,19 +35,25 @@ class PlayersSimpleDataList extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final photoUrl = teamProvider.playersPhotos[index];
 
-                    return Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                      width: 80,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(32.0),
-                        image: DecorationImage(
-                          image: NetworkImage(photoUrl),
-                          fit: BoxFit.cover,
-                          onError: (_, __) {
-                            debugPrint('Failed to load image at $photoUrl');
+                    return Row(
+                      children: [
+                        SizedBox(
+                            width:
+                                screenWidth * 0.02), // Adjust width for spacing
+                        CircleAvatar(
+                          radius: screenWidth *
+                              0.1, // Adjust the radius of the avatar
+                          backgroundImage: NetworkImage(photoUrl),
+                          onBackgroundImageError: (exception, stackTrace) {
+                            // Return a widget in case of error
+                            const Icon(
+                              Icons.person,
+                              size: 40,
+                              color: Colors.grey,
+                            );
                           },
                         ),
-                      ),
+                      ],
                     );
                   },
                 );

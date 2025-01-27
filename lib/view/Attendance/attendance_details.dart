@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:tactix_academy_players/controller/Controllers/attedance_details_provider.dart';
 import 'package:tactix_academy_players/core/Reusable%20Widgets/custom_scaffold.dart';
 import 'package:tactix_academy_players/core/Reusable%20Widgets/loading_indicator.dart';
-import 'package:tactix_academy_players/core/Theme/appcolours.dart';
 import 'package:tactix_academy_players/view/Attendance/Widget/attendance_date_session.dart';
 import 'package:tactix_academy_players/view/Attendance/Widget/attendance_empty_widget.dart';
 import 'package:tactix_academy_players/view/Attendance/Widget/attendance_stats_card.dart';

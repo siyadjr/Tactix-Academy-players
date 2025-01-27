@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tactix_academy_players/model/UserDatabse/user_database.dart';
 
 class ScreenHomeController extends ChangeNotifier {
   String _teamName = "Loading...";
@@ -21,7 +22,7 @@ class ScreenHomeController extends ChangeNotifier {
       if (user == null) {
         _teamName = "No User Logged In";
         _teamPhotoUrl = "";
-        _managerPhotoUrl = "assets/default_team_logo.png"; // Fallback
+        _managerPhotoUrl = "assets/default_team_logo.png";
         notifyListeners();
         return;
       }
@@ -56,7 +57,7 @@ class ScreenHomeController extends ChangeNotifier {
           .collection('Teams')
           .doc(teamId)
           .get();
-      fetchPlayersPhotos(teamId);
+      fetchPlayersPhotos();
 
       if (teamDoc.exists && teamDoc.data() != null) {
         _teamName = teamDoc.data()?['teamName'] ?? "Unnamed Team";
@@ -81,9 +82,11 @@ class ScreenHomeController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchPlayersPhotos(String teamId) async {
+  Future<void> fetchPlayersPhotos() async {
     try {
       // Step 1: Fetch the team document
+      log('callled');
+      final teamId = await UserDatabase().getTeamId();
       final teamSnapshot = await FirebaseFirestore.instance
           .collection('Teams')
           .doc(teamId)

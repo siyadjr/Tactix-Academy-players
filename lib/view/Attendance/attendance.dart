@@ -17,6 +17,7 @@ class Attendance extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = Provider.of<AttendanceProvider>(context, listen: false);
 
+    // Fetch attendance after the frame is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
       provider.fetchAttendance();
     });
@@ -29,46 +30,34 @@ class Attendance extends StatelessWidget {
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: 24,
+              fontSize: 20, // Standardized font size
             ),
           ),
         ),
         elevation: 0,
       ),
-      body: Container(
-        decoration: const BoxDecoration(),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Consumer<AttendanceProvider>(
-            builder: (context, provider, child) {
-              return provider.isLoading
-                  ? const Center(child: LoadingIndicator())
-                  : SizedBox(
-                      height: double.infinity,
-                      child: Stack(
-                        children: [
-                          SingleChildScrollView(
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Center(
-                                      child: buildAttendanceStatus(
-                                          context, provider)),
-                                  const SizedBox(height: 20),
-                                  provider.isLoading
-                                      ? const SizedBox()
-                                      : AttendanceDetailsContainer(
-                                          context: context)
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-            },
-          ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+        child: Consumer<AttendanceProvider>(
+          builder: (context, provider, child) {
+            if (provider.isLoading) {
+              return const Center(child: LoadingIndicator());
+            }
+
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child:
+                      Center(child: buildAttendanceStatus(context, provider)),
+                ),
+                const SizedBox(height: 20),
+                provider.isLoading
+                    ? const SizedBox()
+                    : AttendanceDetailsContainer(context: context),
+              ],
+            );
+          },
         ),
       ),
     );

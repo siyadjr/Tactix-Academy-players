@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tactix_academy_players/core/Reusable%20Widgets/custom_scaffold.dart';
+import 'package:tactix_academy_players/core/Reusable%20Widgets/loading_indicator.dart';
 import 'package:tactix_academy_players/core/Theme/appcolours.dart';
 import 'package:tactix_academy_players/model/UserDatabse/user_database.dart';
 import 'package:tactix_academy_players/view/BroadCast/Widgets/broad_cast_empty.dart';
@@ -14,6 +15,9 @@ class BroadCastAnnouncement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen width for responsive adjustments
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return SafeArea(
       child: CustomScaffold(
         body: Container(
@@ -32,17 +36,13 @@ class BroadCastAnnouncement extends StatelessWidget {
                   future: UserDatabase().getTeamId(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                        ),
-                      );
+                      return const Center(child: LoadingIndicator());
                     }
 
                     if (snapshot.hasError ||
                         !snapshot.hasData ||
                         snapshot.data == null) {
-                      return BroadcastErrorMessage();
+                      return const BroadcastErrorMessage();
                     }
 
                     final teamId = snapshot.data!;
@@ -85,9 +85,11 @@ class BroadCastAnnouncement extends StatelessWidget {
                         String currentDate = '';
 
                         return ListView.builder(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 24,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth *
+                                0.04, // Dynamic horizontal padding
+                            vertical:
+                                screenWidth * 0.05, // Dynamic vertical padding
                           ),
                           itemCount: messages.length,
                           itemBuilder: (context, index) {
@@ -110,12 +112,15 @@ class BroadCastAnnouncement extends StatelessWidget {
                               children: [
                                 if (showDateHeader)
                                   Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 16),
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: screenWidth *
+                                            0.04), // Dynamic padding
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                        vertical: 8,
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: screenWidth *
+                                            0.05, // Adjust horizontal padding
+                                        vertical: screenWidth *
+                                            0.02, // Adjust vertical padding
                                       ),
                                       decoration: BoxDecoration(
                                         color:
@@ -136,7 +141,9 @@ class BroadCastAnnouncement extends StatelessWidget {
                                   duration: Duration(
                                       milliseconds: 300 + (index * 100)),
                                   curve: Curves.easeOut,
-                                  margin: const EdgeInsets.only(bottom: 16),
+                                  margin: EdgeInsets.only(
+                                      bottom: screenWidth *
+                                          0.04), // Adjust bottom margin
                                   child: BroadcastMessageCard(
                                     sender: 'Manager',
                                     formattedTime:

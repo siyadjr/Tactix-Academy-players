@@ -3,8 +3,7 @@ import 'package:flutter_animator/flutter_animator.dart';
 import 'package:tactix_academy_players/core/Reusable%20Widgets/custom_scaffold.dart';
 import 'package:tactix_academy_players/core/Theme/appcolours.dart';
 import 'package:tactix_academy_players/core/Theme/text_style.dart';
-import 'package:tactix_academy_players/model/playermodel.dart';
-import 'package:tactix_academy_players/view/Home/Widgets/events_carousel.dart';
+import 'package:tactix_academy_players/view/Home/Widgets/session_carousel.dart';
 import 'package:tactix_academy_players/view/Home/Widgets/players_data_simple_list.dart';
 import 'package:tactix_academy_players/view/Home/Widgets/team_status_widget.dart';
 import 'package:tactix_academy_players/view/Home/Widgets/welcome_title.dart';
@@ -14,28 +13,23 @@ class ScreenHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> items = [
-      "assets/Tactix app logo.jpg",
-      "assets/Tactix app logo.jpg",
-      "assets/Tactix app logo.jpg",
-      "assets/Tactix app logo.jpg",
-      "assets/Tactix app logo.jpg",
-      "assets/Tactix app logo.jpg",
-      "assets/Tactix app logo.jpg",
-    ];
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
 
     return CustomScaffold(
       body: SingleChildScrollView(
+        // Wrap the body in SingleChildScrollView
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
+            SizedBox(height: screenHeight * 0.02),
             const WelcomeTitle(),
-            const SizedBox(height: 20),
-            FadeIn(child: EventCarousel()),
-            const SizedBox(height: 20),
+            SizedBox(height: screenHeight * 0.02),
+            FadeIn(child: const SessionCarousel()),
+            SizedBox(height: screenHeight * 0.02),
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.05), // Adjust padding
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -44,19 +38,21 @@ class ScreenHome extends StatelessWidget {
                     children: [
                       Text(
                         'Team Players',
-                        style: basicTextStyle,
+                        style: basicTextStyle.copyWith(
+                          fontSize: screenWidth * 0.04,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.5,
+                        ),
                       ),
-                      const Text(
+                      const Text( 
                         'See all',
                         style: TextStyle(color: secondaryTextColor),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
-                  PlayersSimpleDataList(items: items),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  SizedBox(height: screenHeight * 0.01), // Adjust height
+                  const PlayersSimpleDataList(),
+                  SizedBox(height: screenHeight * 0.02), // Adjust height
                   const TeamStatusWidget(),
                 ],
               ),

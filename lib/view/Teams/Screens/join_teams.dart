@@ -11,7 +11,7 @@ import 'package:flutter_animator/widgets/sliding_entrances/slide_in_left.dart';
 import 'package:tactix_academy_players/core/Important/shared_preference.dart';
 import 'package:tactix_academy_players/core/Reusable%20Widgets/custom_scaffold.dart';
 import 'package:tactix_academy_players/core/Theme/text_style.dart';
-import 'package:tactix_academy_players/view/Home/screen_home.dart';
+import 'package:tactix_academy_players/view/BottomNavigation/bottom_navigation_bar.dart';
 import 'package:tactix_academy_players/view/Teams/Screens/all_teams.dart';
 import 'package:tactix_academy_players/view/Teams/Widgets/search_teams_by_teamid.dart';
 
@@ -49,7 +49,7 @@ class JoinTeams extends StatelessWidget {
               SharedPreferenceDatas().sharedPrefSignIn();
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (ctx) => const ScreenHome()),
+                MaterialPageRoute(builder: (ctx) => const CustomBottomNavigationBar()),
                 (_) => false,
               );
             }

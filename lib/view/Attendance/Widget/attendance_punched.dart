@@ -1,111 +1,138 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animator/widgets/bouncing_entrances/bounce_in_down.dart';
-import 'package:flutter_animator/widgets/fading_entrances/fade_in_up.dart';
-import 'package:flutter_animator/widgets/sliding_entrances/slide_in_up.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 import 'package:tactix_academy_players/core/Theme/appcolours.dart';
 
 class AttendancePunched extends StatelessWidget {
-  const AttendancePunched({
-    super.key,
-  });
+  const AttendancePunched({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BounceInDown(
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20),
-        padding: const EdgeInsets.all(30),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.green.shade50, Colors.white],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.green.withOpacity(0.2),
-              spreadRadius: 2,
-              blurRadius: 15,
-              offset: const Offset(0, 5),
-            ),
-          ],
+    final double iconSize = 60.0; // Standardized icon size
+
+    return SingleChildScrollView(
+      child: BounceInDown(
+        preferences: const AnimationPreferences(
+          duration: Duration(milliseconds: 800),
+          offset: Duration(milliseconds: 100),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(30),
-              decoration: BoxDecoration(
-                color: Colors.green.withOpacity(0.1),
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: Colors.green.withOpacity(0.3),
-                  width: 2,
-                ),
-              ),
-              child: const Icon(
-                Icons.check_circle_outline,
-                size: 120,
-                color: Colors.green,
-              ),
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16.0),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [successcolor.shade50, Colors.white],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-            const SizedBox(height: 30),
-            FadeInUp(
-              child: const Text(
-                'Successfully Punched In!',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green,
-                ),
+            borderRadius: BorderRadius.circular(20.0),
+            boxShadow: [
+              BoxShadow(
+                color: successcolor.withOpacity(0.2),
+                spreadRadius: 2,
+                blurRadius: 15,
+                offset: const Offset(0, 5),
               ),
-            ),
-            const SizedBox(height: 15),
-            FadeInUp(
-              child: const Text(
-                'Show all of them what you got!',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: textColor,
-                ),
-              ),
-            ),
-            const SizedBox(height: 30),
-            SlideInUp(
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                decoration: BoxDecoration(
-                  color: Colors.green.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(
-                    color: Colors.green.withOpacity(0.3),
-                    width: 1,
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                HeartBeat(
+                  preferences: const AnimationPreferences(
+                    duration: Duration(milliseconds: 1500),
+                    autoPlay: AnimationPlayStates.Loop,
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.all(12.0),
+                    decoration: BoxDecoration(
+                      color: successcolor.shade50,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: successcolor.shade300,
+                        width: 2,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: successcolor.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Icon(
+                      Icons.check_circle_outline,
+                      size: iconSize,
+                      color: successcolor.shade700,
+                    ),
                   ),
                 ),
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.timer_outlined, color: Colors.green),
-                    SizedBox(width: 8),
-                    Text(
-                      'On Time',
-                      style: TextStyle(
-                        color: Colors.green,
-                        fontWeight: FontWeight.bold,
+                const SizedBox(height: 16.0),
+                FadeInUp(
+                  child: const Text(
+                    'Successfully Punched In!',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.green,
+                      letterSpacing: 0.4,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8.0),
+                FadeInUp(
+                  child: Text(
+                    'Show all of them what you got!',
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      color: textColor,
+                      height: 1.3,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(height: 16.0),
+                SlideInUp(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 10.0,
+                    ),
+                    decoration: BoxDecoration(
+                      color: successcolor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12.0),
+                      border: Border.all(
+                        color: successcolor.withOpacity(0.3),
+                        width: 1,
                       ),
                     ),
-                  ],
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.timer_outlined,
+                          color: successcolor.shade700,
+                          size: 20.0,
+                        ),
+                        const SizedBox(width: 8.0),
+                        Text(
+                          'On Time',
+                          style: TextStyle(
+                            color: successcolor.shade700,
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 }
-
-
-

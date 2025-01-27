@@ -1,75 +1,175 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animator/widgets/fading_entrances/fade_in_up.dart';
-import 'package:flutter_animator/widgets/sliding_entrances/slide_in_down.dart';
-import 'package:flutter_animator/widgets/zooming_entrances/zoom_in.dart';
-import 'package:tactix_academy_players/core/Theme/appcolours.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 
 class NoAttendanceDay extends StatelessWidget {
-  const NoAttendanceDay({
-    super.key,
-  });
+  const NoAttendanceDay({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final double padding = size.width * 0.05;
+    final double iconSize = size.width * 0.16;
+
     return ZoomIn(
+      preferences: const AnimationPreferences(
+        duration: Duration(milliseconds: 800),
+      ),
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20),
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
+        margin: EdgeInsets.symmetric(horizontal: padding),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.grey[100]!, Colors.grey[50]!],
+            colors: [
+              Colors.teal.shade50,
+              Colors.white,
+              Colors.teal.shade50,
+            ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              spreadRadius: 2,
-              blurRadius: 15,
-              offset: const Offset(0, 5),
+              color: Colors.teal.withOpacity(0.15),
+              spreadRadius: 3,
+              blurRadius: 20,
+              offset: const Offset(0, 8),
             ),
           ],
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SlideInDown(
-              child: Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.event_busy,
-                  size: 80,
-                  color: Colors.grey,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: Stack(
+            children: [
+              // Decorative elements
+              Positioned(
+                right: -30,
+                top: -30,
+                child: CircleAvatar(
+                  radius: 60,
+                  backgroundColor: Colors.teal.withOpacity(0.1),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            FadeInUp(
-              child: const Text(
-                "No Attendance Required Today",
-                style: TextStyle(
-                  fontSize: 22,
-                  color: textColor,
-                  fontWeight: FontWeight.bold,
+              Positioned(
+                left: -20,
+                bottom: -20,
+                child: CircleAvatar(
+                  radius: 45,
+                  backgroundColor: Colors.teal.withOpacity(0.1),
                 ),
               ),
-            ),
-            const SizedBox(height: 10),
-            FadeInUp(
-              child: Text(
-                "Enjoy your day off!",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
+              Padding(
+                padding: EdgeInsets.all(padding * 1.5),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SlideInDown(
+                      preferences: const AnimationPreferences(
+                        duration: Duration(milliseconds: 800),
+                        offset: Duration(milliseconds: 200),
+                      ),
+                      child: Container(
+                        padding: EdgeInsets.all(padding),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.teal.shade200,
+                            width: 2,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.teal.withOpacity(0.2),
+                              spreadRadius: 2,
+                              blurRadius: 12,
+                              offset: const Offset(0, 6),
+                            ),
+                          ],
+                        ),
+                        child: Icon(
+                          Icons.spa,
+                          size: iconSize,
+                          color: Colors.teal.shade400,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: padding * 1.2),
+                    FadeInUp(
+                      preferences: const AnimationPreferences(
+                        duration: Duration(milliseconds: 600),
+                        offset: Duration(milliseconds: 400),
+                      ),
+                      child: Text(
+                        "No Attendance Required Today",
+                        style: TextStyle(
+                          fontSize: size.width * 0.0652,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.teal.shade700,
+                          letterSpacing: 0.3,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    SizedBox(height: padding * 0.8),
+                    FadeInUp(
+                      preferences: const AnimationPreferences(
+                        duration: Duration(milliseconds: 600),
+                        offset: Duration(milliseconds: 600),
+                      ),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: padding * 1.2,
+                          vertical: padding * 0.6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.7),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: Colors.teal.shade100,
+                            width: 1,
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.beach_access_rounded,
+                              size: size.width * 0.05,
+                              color: Colors.teal.shade400,
+                            ),
+                            SizedBox(width: padding * 0.4),
+                            Text(
+                              "Enjoy your day off!",
+                              style: TextStyle(
+                                fontSize: size.width * 0.04,
+                                color: Colors.teal.shade700,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: padding * 0.8),
+                    FadeInUp(
+                      preferences: const AnimationPreferences(
+                        duration: Duration(milliseconds: 600),
+                        offset: Duration(milliseconds: 800),
+                      ),
+                      child: Text(
+                        "See you on your next Match day!",
+                        style: TextStyle(
+                          fontSize: size.width * 0.035,
+                          color: Colors.teal.shade600,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

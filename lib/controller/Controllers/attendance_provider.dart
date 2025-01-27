@@ -5,6 +5,7 @@ import 'dart:async';
 
 class AttendanceProvider extends ChangeNotifier {
   Map<String, dynamic> _todaysAttendance = {};
+    
   bool _isLoading = false;
   bool _punched = false;
   bool _isTimeOver = false;

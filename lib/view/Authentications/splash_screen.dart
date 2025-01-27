@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tactix_academy_players/core/Important/shared_preference.dart';
 import 'package:tactix_academy_players/core/Theme/appcolours.dart';
-import 'package:tactix_academy_players/view/Attendance/attendance.dart';
-import 'package:tactix_academy_players/view/Authentications/Boarding%20pages/boarding_.dart';
 import 'package:tactix_academy_players/view/Authentications/SignIn/sign_in.dart';
+import 'package:tactix_academy_players/view/BottomNavigation/bottom_navigation_bar.dart';
 
-import 'package:tactix_academy_players/view/Home/screen_home.dart';
 import 'package:tactix_academy_players/view/Teams/Screens/join_teams.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -35,20 +33,22 @@ class SplashScreen extends StatelessWidget {
     final loggin = sharepref.getBool(userLoggedIn);
     if (signUp != null && signUp == true) {
       if (loggin != null && loggin == true) {
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (ctx) => const ScreenHome()),
-            (_) => true);
+     Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (ctx) => CustomBottomNavigationBar()), (_) => false);
+        
       } else {
         Navigator.pushAndRemoveUntil(context,
-            MaterialPageRoute(builder: (ctx) => JoinTeams()), (_) => true);
+            MaterialPageRoute(builder: (ctx) => JoinTeams()), (_) => false);
       }
     } else if (loggin != null && loggin == true) {
-      Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (ctx) => const ScreenHome()), (_) => true);
-    } else {
       Navigator.pushAndRemoveUntil(
-          context, MaterialPageRoute(builder: (ctx) => const SignIn()), (_) => true);
+          context,
+          MaterialPageRoute(
+              builder: (ctx) => const CustomBottomNavigationBar()),
+          (_) => false);
+    } else {
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (ctx) => const SignIn()), (_) => false);
     }
   }
 }

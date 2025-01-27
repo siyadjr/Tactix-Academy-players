@@ -7,6 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tactix_academy_players/core/Important/cloudinery_class.dart';
 import 'package:tactix_academy_players/core/Important/shared_preference.dart';
 import 'package:tactix_academy_players/core/Theme/appcolours.dart';
+import 'package:tactix_academy_players/view/BottomNavigation/bottom_navigation_bar.dart';
 import 'package:tactix_academy_players/view/Home/screen_home.dart';
 import 'package:tactix_academy_players/view/Teams/Screens/join_teams.dart';
 
@@ -16,7 +17,7 @@ class UserDatabase {
     try {
       // Check if email exists in Managers collection
       final managerDoc = await FirebaseFirestore.instance
-          .collection('Managers')
+          .collection('Players')
           .where('email', isEqualTo: email)
           .get();
 
@@ -24,7 +25,8 @@ class UserDatabase {
         log("User exists in Managers. Redirecting to home screen.");
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (ctx) => const ScreenHome()),
+          MaterialPageRoute(
+              builder: (ctx) => const CustomBottomNavigationBar()),
         );
         return;
       }
@@ -111,15 +113,16 @@ class UserDatabase {
       if (user != null) {
         // Check if the user exists in Managers collection
         final managerDoc = await FirebaseFirestore.instance
-            .collection('Managers')
+            .collection('Players')
             .where('email', isEqualTo: user.email)
             .get();
 
         if (managerDoc.docs.isNotEmpty) {
-          log("User exists in Managers. Redirecting to home screen.");
+          log("User exists in Players. Redirecting to home screen.");
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (ctx) => const ScreenHome()),
+            MaterialPageRoute(
+                builder: (ctx) => const CustomBottomNavigationBar()),
           );
           return;
         }
@@ -182,21 +185,22 @@ class UserDatabase {
       if (user != null) {
         // Check if the user exists in Managers collection
         final managerDoc = await FirebaseFirestore.instance
-            .collection('Managers')
+            .collection('Players')
             .where('email', isEqualTo: user.email)
             .get();
 
         if (managerDoc.docs.isNotEmpty) {
-          log("User exists in Managers. Redirecting to home screen.");
+          log("User exists in Players. Redirecting to home screen.");
           SharedPreferenceDatas().sharedPrefSignIn();
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const ScreenHome()),
+            MaterialPageRoute(
+                builder: (context) => const CustomBottomNavigationBar()),
           );
         } else {
-          log("User not found in Managers. Showing SnackBar.");
+          log("User not found . Showing SnackBar.");
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text("No manager account found with this email."),
+            content: Text("No Player account found with this email."),
             backgroundColor: mainBackground,
           ));
         }
@@ -262,7 +266,8 @@ class UserDatabase {
         // // Navigate to HomeScreen
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const ScreenHome()),
+          MaterialPageRoute(
+              builder: (context) => const CustomBottomNavigationBar()),
         );
       } else {
         log("Invalid name.");

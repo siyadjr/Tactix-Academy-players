@@ -9,7 +9,7 @@ final headingStyle = GoogleFonts.roboto(
 );
 final subHeadingStyle = GoogleFonts.roboto(
   color: defaultTextColor, // Your custom color
-  fontWeight: FontWeight.w400, // Optional: Adjust weight
+  fontWeight: FontWeight.bold, // Optional: Adjust weight
   fontSize: 15, // Optional: Set font size
 );
 final basicTextStyle = TextStyle(color: Colors.white);
