@@ -58,6 +58,7 @@ dependencies:
   google_generative_ai: ^0.4.6
   flutter_gemini: ^2.0.3
   flutter_stripe: ^11.4.0
+  dio: ^5.7.0
 
 dev_dependencies:
   flutter_test:

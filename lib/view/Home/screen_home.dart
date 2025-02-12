@@ -7,30 +7,42 @@ import 'package:tactix_academy_players/view/Home/Widgets/session_carousel.dart';
 import 'package:tactix_academy_players/view/Home/Widgets/players_data_simple_list.dart';
 import 'package:tactix_academy_players/view/Home/Widgets/team_status_widget.dart';
 import 'package:tactix_academy_players/view/Home/Widgets/welcome_title.dart';
+import 'package:tactix_academy_players/view/Players/all_team_players.dart';
 
 class ScreenHome extends StatelessWidget {
   const ScreenHome({super.key});
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    // Use extension for cleaner MediaQuery access
+    final size = MediaQuery.sizeOf(context);
+    final padding = MediaQuery.paddingOf(context);
+
+    // Calculate safe area heights
+    final safeVerticalPadding = padding.top + padding.bottom;
+    final contentHeight = size.height - safeVerticalPadding;
 
     return CustomScaffold(
       body: SingleChildScrollView(
-        // Wrap the body in SingleChildScrollView
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: screenHeight * 0.02),
-            const WelcomeTitle(),
-            SizedBox(height: screenHeight * 0.02),
-            FadeIn(child: const SessionCarousel()),
-            SizedBox(height: screenHeight * 0.02),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: screenWidth * 0.05), // Adjust padding
-              child: Column(
+        physics: const BouncingScrollPhysics(),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: contentHeight * 0.02,
+            horizontal: size.width * 0.04,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const WelcomeTitle(),
+              // SizedBox(height: contentHeight * 0.02),
+              FadeIn(
+                preferences: const AnimationPreferences(
+                  duration: Duration(milliseconds: 800),
+                ),
+                child: const SessionCarousel(),
+              ),
+              // SizedBox(height: contentHeight * 0.02),
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
@@ -39,25 +51,34 @@ class ScreenHome extends StatelessWidget {
                       Text(
                         'Team Players',
                         style: basicTextStyle.copyWith(
-                          fontSize: screenWidth * 0.04,
-                          fontWeight: FontWeight.bold,
+                          fontSize: size.width * 0.045,
+                          fontWeight: FontWeight.w600,
                           letterSpacing: 0.5,
                         ),
                       ),
-                      const Text( 
-                        'See all',
-                        style: TextStyle(color: secondaryTextColor),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (ctx) => const AllTeamPlayers()));
+                        },
+                        child: const Text(
+                          'See all',
+                          style: TextStyle(color: secondaryTextColor),
+                        ),
                       ),
                     ],
                   ),
-                  SizedBox(height: screenHeight * 0.01), // Adjust height
                   const PlayersSimpleDataList(),
-                  SizedBox(height: screenHeight * 0.02), // Adjust height
-                  const TeamStatusWidget(),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const TeamStatusWidgetNew(),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

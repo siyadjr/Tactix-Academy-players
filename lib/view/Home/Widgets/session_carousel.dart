@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tactix_academy_players/controller/Controllers/session_provider.dart';
 import 'package:tactix_academy_players/core/Reusable%20Widgets/loading_indicator.dart';
-import 'package:tactix_academy_players/model/session_model.dart';
 import 'package:tactix_academy_players/view/Home/Widgets/session_carousel_empty.dart';
-
 import 'package:tactix_academy_players/view/Sessions/Widgets/session_carousel_error.dart';
 import 'package:tactix_academy_players/view/Sessions/Widgets/session_carousel_items.dart';
 
@@ -13,30 +11,41 @@ class SessionCarousel extends StatelessWidget {
   const SessionCarousel({super.key});
 
   String _formatDate(String date) {
-    final DateTime dateTime = DateTime.parse(date);
-    return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
+    final dateTime = DateTime.parse(date);
+    return '${dateTime.day.toString().padLeft(2, '0')}/'
+        '${dateTime.month.toString().padLeft(2, '0')}/'
+        '${dateTime.year}';
   }
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double carouselHeight = screenHeight * 0.25;
+    final size = MediaQuery.sizeOf(context);
+    final carouselHeight = size.height * 0.28;
 
     return Consumer<SessionProvider>(
-      builder: (context, sessionProvider, child) {
+      builder: (context, sessionProvider, _) {
         if (sessionProvider.isLoading) {
-          return const LoadingIndicator();
+          return SizedBox(
+            height: carouselHeight,
+            child: const Center(child: LoadingIndicator()),
+          );
         }
 
         if (sessionProvider.error != null) {
-          return const SessionCarouselError();
+          return SizedBox(
+            height: carouselHeight,
+            child: const SessionCarouselError(),
+          );
         }
 
         if (sessionProvider.sessions.isEmpty) {
-          return const NoSessionsPlaceholder();
+          return SizedBox(
+            height: carouselHeight,
+            child: const NoSessionsPlaceholder(),
+          );
         }
 
-        return CarouselSlider(
+        return CarouselSlider.builder(
           options: CarouselOptions(
             height: carouselHeight,
             autoPlay: true,
@@ -47,12 +56,17 @@ class SessionCarousel extends StatelessWidget {
             enableInfiniteScroll: sessionProvider.sessions.length > 1,
             autoPlayInterval: const Duration(seconds: 4),
             autoPlayAnimationDuration: const Duration(milliseconds: 800),
-            autoPlayCurve: Curves.easeInOut,
+            autoPlayCurve: Curves.fastOutSlowIn,
+            scrollPhysics: const BouncingScrollPhysics(),
           ),
-          items: sessionProvider.sessions.map((session) {
+          itemCount: sessionProvider.sessions.length,
+          itemBuilder: (context, index, realIndex) {
+            final session = sessionProvider.sessions[index];
             return SessionCarouselItem(
-                session: session, formatDate: _formatDate);
-          }).toList(),
+              session: session,
+              formatDate: _formatDate,
+            );
+          },
         );
       },
     );

@@ -1,286 +1,229 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:tactix_academy_players/controller/Controllers/screen_home_controller.dart';
 import 'package:tactix_academy_players/controller/Controllers/team_status_provider.dart';
-import 'package:tactix_academy_players/core/Theme/appcolours.dart';
 import 'package:tactix_academy_players/core/Theme/text_style.dart';
 import 'package:tactix_academy_players/view/Attendance/attendance.dart';
+import 'package:tactix_academy_players/view/Payments/payment.dart';
 
-class TeamStatusWidget extends StatelessWidget {
-  const TeamStatusWidget({super.key});
+class TeamStatusWidgetNew extends StatelessWidget {
+  const TeamStatusWidgetNew({super.key});
 
   @override
   Widget build(BuildContext context) {
-    List<String> teamStatus = ['Top Scorers', 'Top Assists', 'Top Rated'];
-    List<IconData> icons = [
-      FontAwesomeIcons.futbol,
-      FontAwesomeIcons.handshake,
-      FontAwesomeIcons.star,
-    ];
-    List<Color> gradients = gradientColours;
+    final size = MediaQuery.sizeOf(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ScreenHomeController>().fetchTeamNameAndPhoto();
+    });
 
-    return Consumer<TeamStatusProvider>(
-      builder: (context, provider, child) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                'Team Stats',
-                style: basicTextStyle.copyWith(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 0.5,
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            LayoutBuilder(
-              builder: (context, constraints) {
-                double heightFactor = constraints.maxHeight > 800
-                    ? 0.8
-                    : 0.7; // Adjust height based on screen size
-
-                return Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 260 *
-                                heightFactor, // Adjust height using heightFactor
-                            child: PageView.builder(
-                              onPageChanged: (index) {
-                                provider.setCurrentPage(index);
-                              },
-                              itemCount: 3,
-                              itemBuilder: (context, index) {
-                                final title = teamStatus[index];
-                                final icon = icons[index];
-                                final gradientColor = gradients[index];
-
-                                return Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 10.0),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        gradientColor,
-                                        gradientColor.withOpacity(0.7),
-                                        gradientColor.withOpacity(0.4),
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: gradientColor.withOpacity(0.3),
-                                        blurRadius: 12,
-                                        offset: const Offset(0, 6),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Stack(
-                                    children: [
-                                      Positioned.fill(
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          child: CustomPaint(
-                                            painter: PatternPainter(),
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        top: 24,
-                                        left: 24,
-                                        child: Container(
-                                          padding: const EdgeInsets.all(12),
-                                          decoration: BoxDecoration(
-                                            color:
-                                                Colors.white.withOpacity(0.15),
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                          ),
-                                          child: Icon(
-                                            icon,
-                                            size: 32,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        bottom: 40,
-                                        right: -20,
-                                        child: Icon(
-                                          icon,
-                                          size: 140,
-                                          color: Colors.white.withOpacity(0.07),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        bottom: 24,
-                                        left: 24,
-                                        right: 24,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              title,
-                                              style: subHeadingStyle.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.bold,
-                                                letterSpacing: 0.5,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 8),
-                                            Container(
-                                              height: 3,
-                                              width: 40,
-                                              decoration: BoxDecoration(
-                                                color: Colors.white
-                                                    .withOpacity(0.7),
-                                                borderRadius:
-                                                    BorderRadius.circular(2),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(
-                              3,
-                              (index) => AnimatedContainer(
-                                duration: const Duration(milliseconds: 300),
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 4),
-                                height: 8,
-                                width: provider.currentPage == index ? 24 : 8,
-                                decoration: BoxDecoration(
-                                  color: provider.currentPage == index
-                                      ? gradients[provider.currentPage]
-                                      : Colors.grey.shade300,
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Column(
-                      children: [
-                        buildStatBox(
-                          context: context,
-                          nextPage: const Attendance(),
-                          title: 'Attendance',
-                          image: 'assets/Attendence.jpg',
-                          gradientColors: [mainBackground, Colors.black],
-                        ),
-                        const SizedBox(height: 10),
-                        buildStatBox(
-                          context: context,
-                          nextPage: const Attendance(),
-                          title: 'Arsenal Fc',
-                          image: 'assets/RankList.png',
-                          gradientColors: [mainBackground, Colors.black],
-                        ),
-                      ],
-                    ),
-                  ],
-                );
-              },
-            ),
-          ],
-        );
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildHeader(size),
+        _buildQuickAccess(context, size),
+        _buildPayments(context, size),
+        _buildStatsPageView(context, size),
+        _buildPageIndicator(context),
+      ],
     );
   }
 
-  Widget buildStatBox({
-    required Widget nextPage,
-    required String title,
-    required String image,
-    required List<Color> gradientColors,
-    required BuildContext context,
-  }) {
-    return GestureDetector(
-      onTap: () => Navigator.push(
-          context, MaterialPageRoute(builder: (ctx) => nextPage)),
-      child: Container(
-        height: 110,
-        width: 160,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
+  Widget _buildHeader(Size size) {
+    return Text(
+      'Team Overview',
+      style: basicTextStyle.copyWith(
+        fontSize: size.width * 0.044,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
+    );
+  }
+
+  Widget _buildStatsPageView(BuildContext context, Size size) {
+    final mainCards = [
+      (
+        title: 'Top Scorers',
+        icon: FontAwesomeIcons.futbol,
+        color: Colors.orange,
+        routeName: '/scorers'
+      ),
+      (
+        title: 'Top Assists',
+        icon: FontAwesomeIcons.handshake,
+        color: Colors.blue,
+        routeName: '/assists'
+      ),
+      (
+        title: 'Top Rated',
+        icon: FontAwesomeIcons.star,
+        color: Colors.purple,
+        routeName: '/ratings'
+      ),
+    ];
+
+    return SizedBox(
+      height: size.height * 0.2,
+      child: PageView.builder(
+        onPageChanged: (index) =>
+            context.read<TeamStatusProvider>().setCurrentPage(index),
+        itemCount: mainCards.length,
+        itemBuilder: (context, index) {
+          final card = mainCards[index];
+          return Padding(
+            padding: EdgeInsets.all(size.width * 0.04),
+            child: _GridCard(
+              title: card.title,
+              icon: card.icon,
+              color: card.color,
+              onTap: () {
+                debugPrint('Navigate to: ${card.routeName}');
+              },
             ),
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Stack(
-            children: [
-              Image.asset(
-                image,
-                fit: BoxFit.contain,
-                width: double.infinity,
-                height: double.infinity,
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildQuickAccess(BuildContext context, Size size) {
+    return Padding(
+      padding: EdgeInsets.all(size.width * 0.04),
+      child: Row(
+        children: [
+          Expanded(
+            child: _QuickAccessCard(
+              title: 'Attendance',
+              subtitle: 'Track Records',
+              icon: Icons.calendar_today_rounded,
+              gradientColors: const [Colors.teal, Colors.cyan],
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const Attendance()),
               ),
-              Opacity(
-                opacity: 0.7,
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: gradientColors,
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
+            ),
+          ),
+          SizedBox(width: size.width * 0.04),
+          Expanded(
+            child: _QuickAccessCard(
+              title: 'Payments',
+              subtitle: 'Payment Records ',
+              icon: Icons.payment,
+              gradientColors: const [Colors.green, Colors.red],
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => PaymentScreen()),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+Widget _buildPayments(BuildContext context, Size size) {
+  return Padding(
+    padding: EdgeInsets.all(size.width * 0.04),
+    child: Row(
+      children: [
+        Expanded(
+          child: Consumer<ScreenHomeController>(
+            builder: (context, teamDetails, child) => _QuickAccessCard(
+              title: teamDetails.teamName,
+              subtitle: 'Team profile',
+              icon: Icons.shield_rounded,
+              gradientColors: const [Colors.red, Colors.deepOrange],
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => PaymentScreen()),
+              ),
+            ),
+          ),
+        )
+      ],
+    ),
+  );
+}
+
+class _GridCard extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _GridCard({
+    required this.title,
+    required this.icon,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: color.withOpacity(0.3),
+              width: 1.5,
+            ),
+            gradient: LinearGradient(
+              colors: [
+                color.withOpacity(0.2),
+                color.withOpacity(0.05),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  icon,
+                  color: color,
+                  size: 24,
+                ),
+              ),
+              const Spacer(),
+              Text(
+                title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  const Text(
+                    'View Details',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 12,
                     ),
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      title,
-                      style: subHeadingStyle.copyWith(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Container(
-                      height: 2,
-                      width: 30,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.7),
-                        borderRadius: BorderRadius.circular(1),
-                      ),
-                    ),
-                  ],
-                ),
+                  const SizedBox(width: 4),
+                  Icon(
+                    Icons.arrow_forward_rounded,
+                    color: color,
+                    size: 16,
+                  ),
+                ],
               ),
             ],
           ),
@@ -290,22 +233,105 @@ class TeamStatusWidget extends StatelessWidget {
   }
 }
 
-class PatternPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.white.withOpacity(0.05)
-      ..strokeWidth = 1;
+Widget _buildPageIndicator(BuildContext context) {
+  return Consumer<TeamStatusProvider>(
+    builder: (context, provider, _) => Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(
+        3,
+        (index) => AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          margin: const EdgeInsets.symmetric(horizontal: 4),
+          height: 8,
+          width: provider.currentPage == index ? 24 : 8,
+          decoration: BoxDecoration(
+            color: provider.currentPage == index
+                ? Colors.white
+                : Colors.white.withOpacity(0.3),
+            borderRadius: BorderRadius.circular(4),
+          ),
+        ),
+      ),
+    ),
+  );
+}
 
-    for (double i = 0.0; i < size.width + size.height; i += 30) {
-      canvas.drawLine(
-        Offset(i, 0),
-        Offset(0, i),
-        paint,
-      );
-    }
+class _QuickAccessCard extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final List<Color> gradientColors;
+  final VoidCallback onTap;
+
+  const _QuickAccessCard({
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+    required this.gradientColors,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            gradient: LinearGradient(
+              colors: [
+                gradientColors[0].withOpacity(0.2),
+                gradientColors[1].withOpacity(0.1),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            border: Border.all(
+              color: gradientColors[0].withOpacity(0.3),
+              width: 1.5,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: gradientColors[0].withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(
+                  icon,
+                  color: gradientColors[0],
+                  size: 20,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                title,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    overflow: TextOverflow.fade),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                subtitle,
+                style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }

@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:tactix_academy_players/core/Important/cloudinery_class.dart';
+import 'package:tactix_academy_players/model/Api/cloudinery_class.dart';
 import 'package:tactix_academy_players/core/Important/shared_preference.dart';
 import 'package:tactix_academy_players/core/Theme/appcolours.dart';
 import 'package:tactix_academy_players/view/BottomNavigation/bottom_navigation_bar.dart';
