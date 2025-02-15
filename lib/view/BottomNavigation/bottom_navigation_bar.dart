@@ -6,6 +6,7 @@ import 'package:tactix_academy_players/controller/Controllers/bottom_navigation_
 import 'package:tactix_academy_players/controller/Controllers/chat_hub_provider.dart';
 import 'package:tactix_academy_players/controller/Controllers/screen_home_controller.dart';
 import 'package:tactix_academy_players/controller/Controllers/session_provider.dart';
+import 'package:tactix_academy_players/controller/Controllers/user_profile_provider.dart';
 import 'package:tactix_academy_players/core/Theme/appcolours.dart';
 import 'package:tactix_academy_players/view/ChatHub/chathub.dart';
 import 'package:tactix_academy_players/view/Home/screen_home.dart';
@@ -31,6 +32,9 @@ class CustomBottomNavigationBar extends StatelessWidget {
                   .fetchSessions();
               Provider.of<ScreenHomeController>(context, listen: false)
                   .fetchPlayersPhotos();
+            } else if (bottomNavProvider.selectedIndex == 3) {
+              Provider.of<UserProfileProvider>(context, listen: false)
+                  .getUserData();
             }
           });
 

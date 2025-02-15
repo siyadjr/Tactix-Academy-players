@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tactix_academy_players/core/Important/shared_preference.dart';
 import 'package:tactix_academy_players/core/Theme/appcolours.dart';
 import 'package:tactix_academy_players/view/Authentications/SignIn/sign_in.dart';
-import 'package:tactix_academy_players/view/Authentications/SignUp/sign_up.dart';
 import 'package:tactix_academy_players/view/BottomNavigation/bottom_navigation_bar.dart';
 
 import 'package:tactix_academy_players/view/Teams/Screens/join_teams.dart';

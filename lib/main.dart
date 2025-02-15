@@ -11,11 +11,14 @@ import 'package:tactix_academy_players/controller/Controllers/chat_hub_provider.
 import 'package:tactix_academy_players/controller/Controllers/payment_details_controller.dart';
 import 'package:tactix_academy_players/controller/Controllers/payment_provider.dart';
 import 'package:tactix_academy_players/controller/Controllers/player_details_provider.dart';
+import 'package:tactix_academy_players/controller/Controllers/players_status_provider.dart';
 import 'package:tactix_academy_players/controller/Controllers/screen_home_controller.dart';
 import 'package:tactix_academy_players/controller/Controllers/session_provider.dart';
 import 'package:tactix_academy_players/controller/Controllers/tactix_ai_provider.dart';
 import 'package:tactix_academy_players/controller/Controllers/team_controller.dart';
+import 'package:tactix_academy_players/controller/Controllers/team_profile_provider.dart';
 import 'package:tactix_academy_players/controller/Controllers/team_status_provider.dart';
+import 'package:tactix_academy_players/controller/Controllers/user_profile_provider.dart';
 import 'package:tactix_academy_players/core/Important/gemini_ai.dart';
 import 'package:tactix_academy_players/core/Important/stripe.dart';
 import 'package:tactix_academy_players/core/Theme/appcolours.dart';
@@ -61,6 +64,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => PaymentProvider()),
         ChangeNotifierProvider(create: (_) => PaymentDetailsController()),
         ChangeNotifierProvider(create: (_) => PlayerDetailsProvider()),
+        ChangeNotifierProvider(create: (_) => PlayersStatusProvider()),
+        ChangeNotifierProvider(create: (_) => TeamProfileProvider()),
+        ChangeNotifierProvider(create: (_) => UserProfileProvider())
       ],
       child: MaterialApp(
         theme: themdata,

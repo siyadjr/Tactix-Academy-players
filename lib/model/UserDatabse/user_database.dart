@@ -2,11 +2,13 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tactix_academy_players/model/Api/cloudinery_class.dart';
 import 'package:tactix_academy_players/core/Important/shared_preference.dart';
 import 'package:tactix_academy_players/core/Theme/appcolours.dart';
+import 'package:tactix_academy_players/model/TeamDatabase/team_database.dart';
 import 'package:tactix_academy_players/view/BottomNavigation/bottom_navigation_bar.dart';
 import 'package:tactix_academy_players/view/Home/screen_home.dart';
 import 'package:tactix_academy_players/view/Teams/Screens/join_teams.dart';
@@ -91,6 +93,7 @@ class UserDatabase {
 
   Future<void> signupWithGoogle(BuildContext context) async {
     try {
+      await GoogleSignIn().signOut();
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       if (googleUser == null) {
         log("Google sign-in canceled by user.");
@@ -165,6 +168,7 @@ class UserDatabase {
 
   Future<void> signWithGoogle(BuildContext context) async {
     try {
+      await GoogleSignIn().signOut();
       GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       if (googleUser == null) {
         log("Google sign-in canceled by user.");
@@ -371,5 +375,38 @@ class UserDatabase {
         backgroundColor: mainBackground,
       ),
     );
+  }
+
+  Future<void> uploadUserProfile(String imageUrl) async {
+    try {
+      final teamId = await getTeamId();
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+      await FirebaseFirestore.instance
+          .collection('Players')
+          .doc(userId)
+          .update({'userProfile': imageUrl});
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  Future<void> updateUserName(String name) async {
+    try {
+      final teamId = await getTeamId();
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+      await FirebaseFirestore.instance
+          .collection('Players')
+          .doc(userId)
+          .update({'name': name});
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  Future<void> deleteAccount() async {
+    final teamId = await getTeamId();
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+    await TeamDatabase().leftTeam();
+    await FirebaseFirestore.instance.collection('Players').doc(userId).delete();
   }
 }

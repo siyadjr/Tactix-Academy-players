@@ -13,4 +13,16 @@ class SharedPreferenceDatas {
     final sharedpref = await SharedPreferences.getInstance();
     final value = await sharedpref.setBool(userLoggedIn, true);
   }
+
+  sharedPrefLeftTeam() async {
+    final sharedpref = await SharedPreferences.getInstance();
+    final value = await sharedpref.setBool(userLoggedIn, false);
+  }
+
+  logout() async {
+    final sharedpref = await SharedPreferences.getInstance();
+    final value = await sharedpref.setBool(userLoggedIn, false);
+
+    final value2 = await sharedpref.setBool(userRegisterd, false);
+  }
 }

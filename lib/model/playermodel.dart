@@ -8,6 +8,9 @@ class PlayerModel {
   final String position; // Playing position (e.g., Forward, Defender)
   final String fit; // Fitness status (e.g., Fit, Injured)
   final String teamId;
+  final String goals;
+  final String assists;
+  final String matches;
 
   // Constructor
   PlayerModel(
@@ -18,7 +21,7 @@ class PlayerModel {
       required this.number,
       required this.position,
       required this.fit,
-      required this.teamId});
+      required this.teamId,required this.goals,required this.assists,required this.matches});
 
   factory PlayerModel.fromFirestore(Map<String, dynamic> data, id) {
     return PlayerModel(
@@ -30,6 +33,9 @@ class PlayerModel {
       position: data['position'] ?? 'Unknown',
       fit: data['fit'] ?? 'Unknown',
       teamId: data['teamId'] ?? '',
+      goals: data['goals']??'',
+      assists: data['assists']??'',
+      matches: data['matches']??''
     );
   }
 }

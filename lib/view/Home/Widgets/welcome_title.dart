@@ -66,12 +66,6 @@ class WelcomeTitle extends StatelessWidget {
                   ),
                 ),
               ),
-              _buildIconButton(
-                icon: Icons.format_list_numbered_sharp,
-                color: Colors.green,
-                onPressed: () => debugPrint("Leaderboard Icon Pressed"),
-              ),
-            
             ],
           ),
         ],
