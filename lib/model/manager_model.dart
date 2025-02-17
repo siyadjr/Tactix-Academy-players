@@ -5,9 +5,7 @@ class ManagerModel {
   final String licenseUrl;
   final String teamId;
 
-  ManagerModel(
-
-      {required this.id,
+  ManagerModel({required this.id,
         required this.name,
       required this.userProfile,
       required this.licenseUrl,

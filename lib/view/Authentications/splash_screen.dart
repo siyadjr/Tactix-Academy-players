@@ -21,7 +21,7 @@ class SplashScreen extends StatelessWidget {
       backgroundColor: mainBackground,
       body: Center(
         child: SizedBox(
-            height: 240, child: Image.asset('assets/Tactix app logo.jpg')),
+            height: 240, child: Image.asset("assets/tactix_app_logo.jpg")),
       ),
     );
   }

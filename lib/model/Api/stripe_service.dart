@@ -154,7 +154,7 @@ class StripeService {
         ),
         content: Text(
           message,
-          style: const TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16, color: Colors.black),
         ),
         actions: [
           TextButton(
